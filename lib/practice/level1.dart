@@ -5,9 +5,6 @@ class Level1 {
   static int stringLength(String str) => str.length;
   static int square(int number) => pow(number, 2).toInt();
   static int largestNumber(List<int> numbers) {
-    if (numbers.isEmpty) {
-      throw ArgumentError('The list cannot be empty');
-    }
     int largestNumber = numbers[0];
     for (int number in numbers) {
       if (number > largestNumber) {
