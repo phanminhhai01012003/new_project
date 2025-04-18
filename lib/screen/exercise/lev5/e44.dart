@@ -70,55 +70,61 @@ class _Exercise44State extends State<Exercise44> {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white
-                  ),
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white),
                   onPressed: () {
-                    try{
+                    try {
                       var map = mapController.text;
-                      var decoded = jsonDecode(map);
                       if (map.isEmpty) {
-                        message.showErrorMessage(context, 'Please enter a list of maps');
+                        message.showErrorMessage(
+                            context, 'Please enter a list of maps');
                         return;
-                      } else if (decoded is List) {
-                        mapKey = Level5.sumAll(List<Map<String, dynamic>>.from(decoded));
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Result'),
-                              content: Expanded(
-                                child: ListView.builder(
-                                  itemCount: mapKey.length,
-                                  itemBuilder: (context, index) {
-                                    return ExpansionTile(
-                                      title: Text(
-                                          mapKey.keys.elementAt(index).toString()),
-                                      children: mapKey.entries.map((e) {
-                                        return ListTile(
-                                          title: Text('${e.key}: ${e.value}'),
-                                        );
-                                      }).toList(),
-                                    );
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
                       } else {
-                        message.showErrorMessage(context, 'Invalid data');
+                        var decoded = jsonDecode(map);
+                        if (decoded is List) {
+                          mapKey = Level5.sumAll(
+                              List<Map<String, dynamic>>.from(decoded));
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Result'),
+                                content: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: mapKey.length,
+                                    itemBuilder: (context, index) {
+                                      return ExpansionTile(
+                                        title: Text(mapKey.keys
+                                            .elementAt(index)
+                                            .toString()),
+                                        children: mapKey.entries.map((e) {
+                                          return ListTile(
+                                            title: Text('${e.key}: ${e.value}'),
+                                          );
+                                        }).toList(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          message.showErrorMessage(
+                              context, 'Invalid Data');
+                        }
                       }
-                    }catch(e){
-                      message.showErrorMessage(context, 'Error: ${e.toString()}');
+                    } catch (e) {
+                      message.showErrorMessage(
+                          context, 'Error: ${e.toString()}');
                     }
                   },
                   child: Text('Execute'),

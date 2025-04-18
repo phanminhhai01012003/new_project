@@ -90,50 +90,52 @@ class _Exercise42State extends State<Exercise42> {
                       try {
                         var map = mapController.text;
                         var list = listController.text;
-                        var decoded = jsonDecode(map);
                         if (map.isEmpty || list.isEmpty) {
                           message.showErrorMessage(
                               context, 'Please enter maps and list');
                           return;
-                        } else if (decoded is List) {
-                          List<String> keys =
-                              list.split(',').map((e) => e.trim()).toList();
-                          mapKey = Level5.mapKey(
-                              keys, List<Map<String, dynamic>>.from(decoded));
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Result'),
-                                content: Expanded(
-                                  child: ListView.builder(
-                                    itemCount: mapKey.length,
-                                    itemBuilder: (context, index) {
-                                      final key = mapKey[index].keys.first;
-                                      final value = mapKey[index][key];
-                                      return ExpansionTile(
-                                        title: Text(key),
-                                        children: [
-                                          Text('Value: $value'),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
                         } else {
-                          message.showErrorMessage(
-                              context, 'Please enter a valid list of maps');
+                          var decoded = jsonDecode(map);
+                          if (decoded is List) {
+                            List<String> keys =
+                                list.split(',').map((e) => e.trim()).toList();
+                            mapKey = Level5.mapKey(
+                                keys, List<Map<String, dynamic>>.from(decoded));
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Result'),
+                                  content: Expanded(
+                                    child: ListView.builder(
+                                      itemCount: mapKey.length,
+                                      itemBuilder: (context, index) {
+                                        final key = mapKey[index].keys.first;
+                                        final value = mapKey[index][key];
+                                        return ExpansionTile(
+                                          title: Text(key),
+                                          children: [
+                                            Text('Value: $value'),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else{
+                            message.showErrorMessage(
+                                context, "Invalid Data");
+                          }
                         }
                       } catch (e) {
                         message.showErrorMessage(

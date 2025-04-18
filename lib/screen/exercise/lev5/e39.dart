@@ -76,45 +76,47 @@ class _Exercise39State extends State<Exercise39> {
                   onPressed: () {
                     try{
                       var map = mapController.text;
-                      var decoded = jsonDecode(map);
                       if (map.isEmpty) {
                         message.showErrorMessage(context, "Please enter a list of maps");
                         return;
-                      } else if (decoded is List){
-                        unique = Level5.uniqArrayObject(List<Map<String, int>>.from(decoded));
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Result'),
-                              content: Expanded(
-                                child: ListView.builder(
-                                  itemCount: unique.length,
-                                  itemBuilder: (context, index) {
-                                    final key = unique[index].keys.first;
-                                    final value = unique[index][key];
-                                    return ExpansionTile(
-                                      title: Text(key),
-                                      children: [
-                                        Text('Value: $value'),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
                       } else {
-                        message.showErrorMessage(context, "Invalid data");
+                        var decoded = jsonDecode(map);
+                        if (decoded is List){
+                          unique = Level5.uniqArrayObject(List<Map<String, int>>.from(decoded));
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Result'),
+                                content: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: unique.length,
+                                    itemBuilder: (context, index) {
+                                      final key = unique[index].keys.first;
+                                      final value = unique[index][key];
+                                      return ExpansionTile(
+                                        title: Text(key),
+                                        children: [
+                                          Text('Value: $value'),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }else{
+                          message.showErrorMessage(context, "Invalid Data");
+                        }
                       }
                     }catch(e){
                       message.showErrorMessage(context, "Error: ${e.toString()}");

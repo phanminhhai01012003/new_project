@@ -90,52 +90,55 @@ class _Exercise40State extends State<Exercise40> {
                     try {
                       var input = mapController.text;
                       var field = fieldController.text;
-                      var decoded = jsonDecode(input);
                       if (input.isEmpty || field.isEmpty) {
                         message.showErrorMessage(
                             context, 'Please enter a list of map and field');
                         return;
-                      } else if (decoded is List) {
-                        grouped = Level5.groupBy(
-                            List<Map<String, dynamic>>.from(decoded), field);
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Result'),
-                              content: Expanded(
-                                child: ListView.builder(
-                                  itemCount: grouped.length,
-                                  itemBuilder: (context, index) {
-                                    var key = grouped.keys.elementAt(index);
-                                    var value = grouped[key];
-                                    return ExpansionTile(
-                                      title: Text(key),
-                                      children: value!.map((e) {
-                                        return ListTile(
-                                          title: Text(e.toString()),
-                                        );
-                                      }).toList(),
-                                    );
-                                  },
+                      } else {
+                        var decoded = jsonDecode(input);
+                        if (decoded is List) {
+                          grouped = Level5.groupBy(
+                              List<Map<String, dynamic>>.from(decoded), field);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Result'),
+                                content: Expanded(
+                                  child: ListView.builder(
+                                    itemCount: grouped.length,
+                                    itemBuilder: (context, index) {
+                                      var key = grouped.keys.elementAt(index);
+                                      var value = grouped[key];
+                                      return ExpansionTile(
+                                        title: Text(key),
+                                        children: value!.map((e) {
+                                          return ListTile(
+                                            title: Text(e.toString()),
+                                          );
+                                        }).toList(),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else{
-                        message.showErrorMessage(context, "Invalid data");
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          message.showErrorMessage(context, 'Invalid Data');
+                        }
                       }
                     } catch (e) {
-                      message.showErrorMessage(context, 'Error: ${e.toString()}');
+                      message.showErrorMessage(
+                          context, 'Error: ${e.toString()}');
                     }
                   },
                   child: Text('Execute'),

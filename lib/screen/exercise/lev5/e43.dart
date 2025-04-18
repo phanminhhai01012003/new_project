@@ -114,52 +114,54 @@ class _Exercise43State extends State<Exercise43> {
                       var newOrderText = newOrderController.text;
                       var id = int.parse(idText);
                       var newOrder = int.parse(newOrderText);
-                      var decoded = jsonDecode(map);
                       if (map.isEmpty ||
                           idText.isEmpty ||
                           newOrderText.isEmpty) {
                         message.showErrorMessage(context,
                             "Please enter a list of maps, id and new order");
                         return;
-                      } else if (decoded is List) {
-                        mapOrder = Level5.switchOrder(id, newOrder,
-                            List<Map<String, dynamic>>.from(decoded));
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Result'),
-                              content: Expanded(
-                                child: ListView.builder(
-                                    itemCount: mapOrder.length,
-                                    itemBuilder: (context, index) {
-                                      return ExpansionTile(
-                                        title: Text(
-                                            mapOrder[index]['id'].toString()),
-                                        children: mapOrder[index]
-                                            .entries
-                                            .map((entry) {
-                                          return ListTile(
-                                            title: Text(
-                                                '${entry.key}: ${entry.value}'),
-                                          );
-                                        }).toList(),
-                                      );
-                                    }),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
                       } else {
-                        message.showErrorMessage(context, "Invalid data");
+                        var decoded = jsonDecode(map);
+                        if (decoded is List) {
+                          mapOrder = Level5.switchOrder(id, newOrder,
+                              List<Map<String, dynamic>>.from(decoded));
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Result'),
+                                content: Expanded(
+                                  child: ListView.builder(
+                                      itemCount: mapOrder.length,
+                                      itemBuilder: (context, index) {
+                                        return ExpansionTile(
+                                          title: Text(
+                                              mapOrder[index]['id'].toString()),
+                                          children: mapOrder[index]
+                                              .entries
+                                              .map((entry) {
+                                            return ListTile(
+                                              title: Text(
+                                                  '${entry.key}: ${entry.value}'),
+                                            );
+                                          }).toList(),
+                                        );
+                                      }),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          message.showErrorMessage(context, "Invalid Data");
+                        }
                       }
                     } catch (e) {
                       message.showErrorMessage(
